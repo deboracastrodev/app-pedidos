@@ -1,0 +1,132 @@
+version: '3'
+services:
+
+  appserver:
+    image: nginx:alpine
+    restart: always
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./apps/admin/:/var/www/admin
+      - ./apps/api/:/var/www/api
+      - ./apps/ms-cliente/:/var/www/ms-cliente
+      - ./apps/ms-cardapio/:/var/www/ms-cardapio
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/conf.d/
+      - ./docker/nginx/sites/:/etc/nginx/sites-enabled/
+      - ./docker/nginx/sites/:/etc/nginx/sites-available/
+      - ./docker/nginx/ssl/:/etc/ssl/
+    networks:
+      - app-network
+  
+  admin:
+    build: 
+      context: ./apps/admin
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: admin
+      SERVICE_TAGS:  dev
+    working_dir: /var/www/admin
+    volumes:
+      - ./apps/admin/:/var/www/admin
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+  
+  api:
+    build: 
+      context: ./apps/api
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: api
+      SERVICE_TAGS:  dev
+    working_dir: /var/www/api
+    volumes:
+      - ./apps/api/:/var/www/api
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+  
+  ms-cardapio:
+    build: 
+      context: ./apps/ms-cardapio
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: cardapio
+      SERVICE_TAGS:  dev
+    working_dir: /var/www/ms-cardapio
+    volumes:
+      - ./apps/ms-cardapio/:/var/www/ms-cardapio
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+  
+  ms-cliente:
+    build: 
+      context: ./apps/ms-cliente
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: cliente
+      SERVICE_TAGS:  dev
+    working_dir: /var/www/ms-cliente
+    volumes:
+      - ./apps/ms-cliente/:/var/www/ms-cliente
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: app-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:fpm-alpine
+    container_name: phpmyadmin
+    links:
+      - db:db
+    ports:
+      - 8000:80
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
