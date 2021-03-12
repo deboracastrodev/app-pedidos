@@ -1,0 +1,15 @@
+openapi: 3.0.0
+info:
+  title: 'Api microserviço MS-Cliente'
+  version: '0.1'
+paths:
+  /v1/cliente:
+    get:
+      tags:
+        - cliente
+      summary: 'Retorna uma lista de clientes'
+      description: 'Retorna um array de objetos do tipo cliente'
+      operationId: 'App\Http\APIv1\ClienteController\ClienteController::index'
+      responses:
+        '200':
+          description: 'Uma lista de clientes'
