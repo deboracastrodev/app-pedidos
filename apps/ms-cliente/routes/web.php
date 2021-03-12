@@ -17,7 +17,13 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-// $app->router->group(['prefix' => '/api', 'middleware' => Middleware\AuthMiddleware::NAME], function (Router $route) {
-//     $route->get('/', Handlers\HomeHandler::class);
-//     $route->post('/', Handlers\HomeHandler::class);
-// });
+$router->group(['middleware' => 'auth','prefix' => 'api'], function ($router) 
+{
+    $router->get('me', 'AuthController@me');
+});
+
+$router->group(['prefix' => 'api'], function () use ($router) 
+{
+    $router->post('register', 'AuthController@register');
+    $router->post('login', 'AuthController@login');
+});
