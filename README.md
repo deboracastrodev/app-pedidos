@@ -12,5 +12,6 @@ Microserviços de Api Restful, criados com Lumen.
  - Lumen
  - Mysql
  - Documentação Swagger
+ - Autentiação Jwt
  
  Message Broker: RabbitMQ
