@@ -1,17 +1,23 @@
 # Sistema para gerenciamento de pedidos 
 
-## Tecnologias: Laravel - Lumen - MySql - Docker - Nginx - RabbitMQ
+Sua finalidade gerenciar pedidos de restaurantes, onde o cliente acessa um cardápio online, monta seu pedido e envia ao estabelecimento.
 
-Composição
+Usuários
+  - Cliente:
+    - Ver cardápio
+    - Montar um pedido
+    - Fazer um pedido
+    - Cancelar um pedido
+    - Repetir um pedido
+    - Ver tempo de espera do pedido atual
+    - Consultar histórico de pedidos
 
-Sistema principal para administração.
-  - Laravel
-  - MySql
+  - Restaurante
+    - Montar um cardápio
+    - Receber um pedido
+    - Aceitar ou recusar um pedido
+    - Informar prazo de produção
+    - Atualizar status pedido
 
-Microserviços de Api Restful, criados com Lumen. 
- - Lumen
- - Mysql
- - Documentação Swagger
- - Autentiação Jwt
- 
- Message Broker: RabbitMQ
+## Arquitetura
+![alt text](https://github.com/deboracastrodev/app-pedidos/blob/master/analise/proposta_arquitetura_app_pedidos.jpeg?raw=true)
