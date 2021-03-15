@@ -1,6 +1,7 @@
 <?php
 
 /** @var \Laravel\Lumen\Routing\Router $router */
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,16 +13,6 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-$router->get('/', 'API\v1\ClienteController@listAll');
-
-$router->group([
-    'prefix' => 'v1',
-    'as' => 'api.', 
-    'namespace' => 'API\v1', 
-], function () use ($router) {
-    $router->get('cliente', 'ClienteController@listAll');
-}); 
 
 $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router) 
 {
@@ -44,3 +35,11 @@ $router->group(['prefix' => 'api/v1/user'], function () use ($router) {
     // Matches "/api/v1/user
     $router->get('/', 'API\v1\UserController@allUsers');
 });
+
+$router->group([
+  'prefix' => 'v1',
+  'as' => 'api.', 
+  'namespace' => 'API\V1', 
+], function () use ($router) {
+    $router->get('cliente', 'API\v1\ClienteController@listAll');
+}); 
