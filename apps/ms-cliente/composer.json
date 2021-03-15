@@ -8,6 +8,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "chuckrincon/lumen-config-discover": "^1.0",
+        "laravel/legacy-factories": "^1.1",
         "laravel/lumen-framework": "^8.0",
         "tymon/jwt-auth": "^1.0",
         "zircote/swagger-php": "^3.1"
