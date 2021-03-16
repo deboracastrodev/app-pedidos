@@ -97,6 +97,8 @@ $app->register(App\Providers\EventServiceProvider::class);
 // $app->register(App\Providers\RouteServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Chuckrincon\LumenConfigDiscover\DiscoverServiceProvider::class);
+$app->register(Illuminate\Database\Eloquent\LegacyFactoryServiceProvider::class);
+
 
 /*
 |--------------------------------------------------------------------------

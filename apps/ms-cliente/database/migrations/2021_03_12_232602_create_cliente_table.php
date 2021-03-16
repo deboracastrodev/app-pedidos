@@ -20,6 +20,7 @@ class CreateClienteTable extends Migration
             $table->string('password');
             $table->string('email');
             $table->string('nome');
+            $table->string('telefone');
         });
     }
 
