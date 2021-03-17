@@ -13,29 +13,27 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+$router->get('/', 'API\v1\ClienteController@listAll');
 
-$router->group(['middleware' => 'auth','prefix' => 'api'], function ($router) 
+$router->group([
+    'prefix' => 'v1',
+    'as' => 'api.', 
+    'namespace' => 'API\v1', 
+    'middleware' => 'authapi'
+], function () use ($router) {
+    $router->get('cliente', 'ClienteController@listAll');
+}); 
+
+$router->group(['prefix' => 'api'], function ($router) 
 {
     $router->get('me', 'AuthController@me');
+    $router->post('register', 'AuthController@register');
+    $router->post('login', 'AuthController@login');
 });
 
-// API route group
-$router->group(['prefix' => 'api/v1'], function () use ($router) {
-    // Matches "/api/register
-    $router->post('register', 'AuthController@register');
-     // Matches "/api/login
-    $router->post('login', 'AuthController@login');
+$router->group(['middleware' => 'auth', 'prefix' => 'api/v1/user'], function () use ($router) {
 
-    // Matches "/api/profile
-    $router->get('profile', 'APIv1\UserController@profile');
-
-    // Matches "/api/users/1 
-    //get one user by id
-    $router->get('users/{id}', 'APIv1\UserController@singleUser');
-
-    // Matches "/api/users
-    $router->get('users', 'APIv1\UserController@allUsers');
+    $router->get('profile', 'API\UserController@profile');
+    $router->get('{id}', 'API\UserController@singleUser');
+    $router->get('/', 'API\UserController@allUsers');
 });

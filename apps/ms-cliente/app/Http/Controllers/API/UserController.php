@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\APIv1;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Auth;
 use  App\Models\User;
@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function allUsers()
     {
-      return response()->json(['users' =>  User::all()], 200);
+        return response()->json(['users' =>  User::all()], 200);
     }
 
     /**
