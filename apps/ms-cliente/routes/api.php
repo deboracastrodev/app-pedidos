@@ -14,28 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$router->group(['middleware' => 'auth','prefix' => 'api'], function ($router) 
-{
-    $router->get('me', 'AuthController@me');
-    // Matches "/api/register
-    $router->post('register', 'AuthController@register');
-     // Matches "/api/login
-    $router->post('login', 'AuthController@login');
-});
-
-$router->group(['prefix' => 'api/v1/user'], function () use ($router) {
-
-    // Matches "/api/v1/user/profile
-    $router->get('profile', 'API\v1\UserController@profile');
-
-    // Matches "/api/v1/user/1 
-    //get one user by id
-    $router->get('{id}', 'API\v1\UserController@singleUser');
-
-    // Matches "/api/v1/user
-    $router->get('/', 'API\v1\UserController@allUsers');
-});
-
 $router->group([
   'prefix' => 'v1',
   'as' => 'api.', 
