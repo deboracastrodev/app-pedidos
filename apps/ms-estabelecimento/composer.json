@@ -1,15 +1,23 @@
 {
     "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
+    "description": "Microserviço de estabelecimento para App Pedidos",
+    "author": "Débora Castro - deboracastro.pm@gmail.com",
     "keywords": ["framework", "laravel", "lumen"],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
-        "laravel/lumen-framework": "^8.0"
+        "anik/form-request": "^3.3",
+        "chuckrincon/lumen-config-discover": "^1.0",
+        "flipbox/lumen-generator": "^8.2",
+        "laravel/legacy-factories": "^1.1",
+        "laravel/lumen-framework": "^8.0",
+        "tymon/jwt-auth": "^1.0",
+        "zircote/swagger-php": "^3.1"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
+        "damianopetrungaro/php-commitizen": "^0.2.0",
+        "fakerphp/faker": "^1.13",
         "mockery/mockery": "^1.3.1",
         "phpunit/phpunit": "^9.3"
     },

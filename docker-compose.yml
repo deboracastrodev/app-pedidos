@@ -88,6 +88,23 @@ services:
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
+  
+  ms-estabelecimento:
+    build: 
+      context: ./apps/ms-estabelecimento
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: estabelecimento
+      SERVICE_TAGS:  dev
+    working_dir: /var/www/ms-estabelecimento
+    volumes:
+      - ./apps/ms-estabelecimento/:/var/www/ms-estabelecimento
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
 
   db:
     image: mysql:8.0
