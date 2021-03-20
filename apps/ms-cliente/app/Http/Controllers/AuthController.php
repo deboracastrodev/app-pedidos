@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\User as User;
+use App\Models\Cliente as cliente;
 
 class AuthController extends Controller
 {
@@ -14,7 +14,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Store a new user.
+     * Store a new cliente.
      *
      * @param  Request  $request
      * @return Response
@@ -23,30 +23,30 @@ class AuthController extends Controller
     {
         //validate incoming request 
         $this->validate($request, [
-            'username' => 'required|string|unique:users',
+            'username' => 'required|string|unique:clientes',
             'password' => 'required|confirmed',
         ]);
 
         try 
         {
-            $user = new User;
-            $user->username= $request->input('username');
-            $user->password = app('hash')->make($request->input('password'));
-            $user->save();
+            $cliente = new cliente;
+            $cliente->username= $request->input('username');
+            $cliente->password = app('hash')->make($request->input('password'));
+            $cliente->save();
 
             return response()->json( [
-                        'entity' => 'users', 
-                        'action' => 'create', 
-                        'result' => 'success'
+                'entity' => 'cliente', 
+                'action' => 'create', 
+                'result' => 'success'
             ], 201);
 
         } 
         catch (\Exception $e) 
         {
             return response()->json( [
-              'entity' => 'users', 
-              'action' => 'create', 
-              'result' => 'failed'
+                'entity' => 'cliente', 
+                'action' => 'create', 
+                'result' => 'failed'
             ], 409);
         }
     }
@@ -68,13 +68,13 @@ class AuthController extends Controller
         $credentials = $request->only(['username', 'password']);
 
         if (! $token = Auth::attempt($credentials)) {			
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Não autorizado'], 401);
         }
         return $this->respondWithToken($token);
     }
     
     /**
-     * Get user details.
+     * Get cliente details.
      *
      * @param  Request  $request
      * @return Response
