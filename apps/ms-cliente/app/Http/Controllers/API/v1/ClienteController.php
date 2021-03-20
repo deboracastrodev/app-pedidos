@@ -57,7 +57,7 @@ class ClienteController extends Controller
 
     /**
      * @OA\Get(
-     *      path="v1/cliente/{id}",
+     *      path="/v1/cliente/{id}",
      *      operationId="buscaPorId",
      *      tags={"cliente"},
      *      summary="Busca dados do cliente",
@@ -180,7 +180,7 @@ class ClienteController extends Controller
 
     /**
      * @OA\Put(
-     *      path="v1/cliente/{id}",
+     *      path="/v1/cliente/{id}",
      *      operationId="editar",
      *      tags={"cliente"},
      *      summary="Edita dados de um cliente",
@@ -239,7 +239,7 @@ class ClienteController extends Controller
 
     /**
      * @OA\Delete(
-     *      path="v1/cliente/{id}",
+     *      path="/v1/cliente/{id}",
      *      operationId="delete",
      *      tags={"cliente"},
      *      summary="Deleta um cliente",
