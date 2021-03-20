@@ -224,9 +224,13 @@ class ClienteController extends Controller
      *      )
      * )
      */
-    public function editar(ClienteEdicaoRequest $request, Cliente $cliente)
+    public function editar(ClienteEdicaoRequest $request, Int $id)
     {
-        $cliente->update($request->all());
+        $cliente = Cliente::findOrFail($id);
+        $cliente->nome       = $request->input('nome'); 
+        $cliente->email      = $request->input('email');
+        $cliente->telefone   = $request->input('telefone'); 
+        $cliente->save();
 
         return (new ClienteResource($cliente))
             ->response()
@@ -268,11 +272,12 @@ class ClienteController extends Controller
      *      )
      * )
      */
-    public function delete(Cliente $cliente)
+    public function delete(Request $request)
     {
+        $cliente = Cliente::findOrFail($request->id);
         $cliente->delete();
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response('Cliente deletado com sucesso!', Response::HTTP_NO_CONTENT);
     }
 
 }
