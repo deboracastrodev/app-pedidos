@@ -5,18 +5,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente as Cliente;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ClienteRequest;
-use App\Http\Requests\ClienteLoginRequest;
-use App\Http\Resources\ClienteResource;
+use App\Http\Requests\ClienteRequest as ClienteRequest;
+use App\Http\Requests\ClienteLoginRequest as ClienteLoginRequest;
+use App\Http\Requests\ClienteEdicaoRequest as ClienteEdicaoRequest;
+use App\Http\Resources\ClienteResource as ClienteResource;
+use App\Http\Resources\ClienteCollection;
 
 use Symfony\Component\HttpFoundation\Response;
 
 class ClienteController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login','cadastar']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('authapi', ['except' => ['login','cadastar']]);
+    // }
 
     /**
      * @OA\Info(title="Documentação para MS-Cliente", version="0.1",
@@ -44,19 +46,19 @@ class ClienteController extends Controller
      * ),
      * 
     */
-    public function listAll()
+    public function listarTodos()
     {
         $clientes = Cliente::all();
 
-        return (new ClienteResource($clientes))
+        return (new ClienteCollection($clientes))
             ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+            ->setStatusCode(Response::HTTP_OK);
     }
 
-        /**
+    /**
      * @OA\Get(
      *      path="v1/cliente/{id}",
-     *      operationId="getById",
+     *      operationId="buscaPorId",
      *      tags={"cliente"},
      *      summary="Busca dados do cliente",
      *      description="Retorna cliente data",
@@ -87,7 +89,7 @@ class ClienteController extends Controller
      *      )
      * )
      */
-    public function getById(Int $id)
+    public function buscaPorId(Int $id)
     {
         $cliente = Cliente::findOrFail($id);
 
@@ -107,6 +109,7 @@ class ClienteController extends Controller
      *              type="object",
      *              @OA\Property(property="username", type="string"),
      *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="password_confirmation", type="string"),
      *              @OA\Property(property="email", type="string"),
      *              @OA\Property(property="nome", type="string"),
      *              @OA\Property(property="telefone", type="string"),
@@ -136,11 +139,11 @@ class ClienteController extends Controller
         try 
         {
             $cliente = new Cliente;
-            $cliente->username = $request->input('username');
-            $cliente->password = app('hash')->make($request->input('password'));
-            $cliente->nome     = $request->input('nome'); 
-            $cliente->email    = $request->input('email');
-            $cliente->telefone     = $request->input('telefone'); 
+            $cliente->username   = $request->input('username');
+            $cliente->password   = app('hash')->make($request->input('password'));
+            $cliente->nome       = $request->input('nome'); 
+            $cliente->email      = $request->input('email');
+            $cliente->telefone   = $request->input('telefone'); 
             $cliente->save();
 
             return (new ClienteResource($cliente))
@@ -166,12 +169,6 @@ class ClienteController extends Controller
      */	 
     public function login(ClienteLoginRequest $request)
     {
-          //validate incoming request 
-        $this->validate($request, [
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
         $credentials = $request->only(['username', 'password']);
 
         if (! $token = Auth::attempt($credentials)) {
@@ -179,6 +176,103 @@ class ClienteController extends Controller
             ->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
         return $this->respondWithToken($token);
+    }
+
+    /**
+     * @OA\Put(
+     *      path="v1/cliente/{id}",
+     *      operationId="editar",
+     *      tags={"cliente"},
+     *      summary="Edita dados de um cliente",
+     *      description="Retorna dados do cliente atualizados",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Cliente id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="nome", type="string"),
+     *              @OA\Property(property="telefone", type="string"),
+     *          ),
+     *     ),
+     *      @OA\Response(
+     *          response=202,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
+     * )
+     */
+    public function editar(ClienteEdicaoRequest $request, Cliente $cliente)
+    {
+        $cliente->update($request->all());
+
+        return (new ClienteResource($cliente))
+            ->response()
+            ->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="v1/cliente/{id}",
+     *      operationId="delete",
+     *      tags={"cliente"},
+     *      summary="Deleta um cliente",
+     *      description="Deletes um cliente de acordo com o id enviado",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Cliente id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation",
+     *          @OA\JsonContent()
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Resource Not Found"
+     *      )
+     * )
+     */
+    public function delete(Cliente $cliente)
+    {
+        $cliente->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 
 }
