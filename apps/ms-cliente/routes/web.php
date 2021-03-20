@@ -22,6 +22,8 @@ $router->group([
     'middleware' => 'authapi'
 ], function () use ($router) {
     $router->get('cliente', 'ClienteController@listAll');
+    $router->post('cliente', 'ClienteController@cadastrar');
+    $router->get('cliente/{id}', 'ClienteController@getById');
 }); 
 
 $router->group(['prefix' => 'api'], function ($router) 

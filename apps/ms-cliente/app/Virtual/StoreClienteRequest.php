@@ -5,18 +5,17 @@
  *      title="Store Cliente request",
  *      description="Store Cliente request body data",
  *      type="object",
- *      required={"username, password, nome, email, telefone"}
- * )
+ *      required={"username"},
+ * ),
  */
-
 class StoreProjectRequest
 {
     /**
      * @OA\Property(
      *      title="Nome",
      *      description="Nome do cliente",
-     *      example="João Silva"
-     * )
+     *      example="João Silva",
+     * ),
      *
      * @var string
      */
@@ -26,8 +25,8 @@ class StoreProjectRequest
      * @OA\Property(
      *      title="Email",
      *      description="E-mail do cliente",
-     *      example="joao@mail.com"
-     * )
+     *      example="joao@mail.com",
+     * ),
      *
      * @var string
      */
@@ -37,8 +36,8 @@ class StoreProjectRequest
      * @OA\Property(
      *      title="Telefone",
      *      description="Telefone do cliente",
-     *      example="(99) 9999-9999"
-     * )
+     *      example="(99) 9999-9999",
+     * ),
      *
      * @var string
      */
@@ -48,8 +47,8 @@ class StoreProjectRequest
      * @OA\Property(
      *      title="Username",
      *      description="Username do cliente",
-     *      example="joao.silva"
-     * )
+     *      example="joao.silva",
+     * ),
      *
      * @var string
      */
@@ -59,8 +58,8 @@ class StoreProjectRequest
      * @OA\Property(
      *      title="Password",
      *      description="Password do cliente",
-     *      example="y&hdy98"
-     * )
+     *      example="y&hdy98",
+     * ),
      *
      * @var string
      */

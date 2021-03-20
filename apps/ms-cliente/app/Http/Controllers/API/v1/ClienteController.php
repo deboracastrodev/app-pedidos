@@ -45,11 +45,54 @@ class ClienteController extends Controller
     */
     public function listAll()
     {
-        $cliente = Cliente::all();
+        $clientes = Cliente::all();
+
+        return (new ClienteResource($clientes))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
+    }
+
+        /**
+     * @OA\Get(
+     *      path="v1/cliente/{id}",
+     *      operationId="getById",
+     *      tags={"cliente"},
+     *      summary="Busca dados do cliente",
+     *      description="Retorna cliente data",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Cliente id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
+    public function getById(Int $id)
+    {
+        $cliente = Cliente::findOrFail($id);
 
         return (new ClienteResource($cliente))
             ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -58,6 +101,16 @@ class ClienteController extends Controller
      *     summary="Criar um cliente",
      *     description="Retorna um array de objetos do tipo cliente",
      *     path="/v1/cliente",
+     *     @OA\RequestBody(
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="username", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="nome", type="string"),
+     *              @OA\Property(property="telefone", type="string"),
+     *          ),
+     *     ),
      *     @OA\Response(
      *        response="201", 
      *        description="Success"

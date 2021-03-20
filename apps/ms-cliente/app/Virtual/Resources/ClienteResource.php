@@ -5,9 +5,9 @@
  *     title="ClienteResource",
  *     description="Cliente resource",
  *     @OA\Xml(
- *         name="ClienteResource"
- *     )
- * )
+ *         name="ClienteResource",
+ *     ),
+ * ),
  */
 class ClienteResource
 {
