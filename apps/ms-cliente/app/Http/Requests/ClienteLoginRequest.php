@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class ClienteRequest extends FormRequest
+class ClienteLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class ClienteRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+      return true;
     }
 
     /**
@@ -25,11 +25,8 @@ class ClienteRequest extends FormRequest
     public function rules()
     {
         $validations = [
-            'nome'  => 'required|string|min:3|max:255',
-            'email' => 'required|email',
-            'telefone' => 'required',
-            'username' => 'required|string|unique:clientes',
-            'password' => 'required|confirmed',
+            'username' => 'required|string',
+            'password' => 'required|string',
         ];
 
         return $validations;

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cliente as Cliente;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ClienteRequest;
+use App\Http\Requests\ClienteLoginRequest;
 use App\Http\Resources\ClienteResource;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -155,6 +156,29 @@ class ClienteController extends Controller
                 'result' => 'failed'
             ], 409);
         }
+    }
+    
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @param  Request  $request
+     * @return Response
+     */	 
+    public function login(ClienteLoginRequest $request)
+    {
+          //validate incoming request 
+        $this->validate($request, [
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $request->only(['username', 'password']);
+
+        if (! $token = Auth::attempt($credentials)) {
+            return response()
+            ->setStatusCode(Response::HTTP_UNAUTHORIZED);
+        }
+        return $this->respondWithToken($token);
     }
 
 }

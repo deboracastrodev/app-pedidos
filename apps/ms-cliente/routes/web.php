@@ -13,7 +13,7 @@
 |
 */
 
-$router->get('/', 'API\v1\ClienteController@listAll');
+$router->post('login', 'ClienteController@login');
 
 $router->group([
     'prefix' => 'v1',
@@ -26,16 +26,16 @@ $router->group([
     $router->get('cliente/{id}', 'ClienteController@getById');
 }); 
 
-$router->group(['prefix' => 'api'], function ($router) 
-{
-    $router->get('me', 'AuthController@me');
-    $router->post('register', 'AuthController@register');
-    $router->post('login', 'AuthController@login');
-});
+// $router->group(['prefix' => ''], function ($router) 
+// {
+//     $router->get('me', 'AuthController@me');
+//     $router->post('register', 'AuthController@register');
+//     $router->post('login', 'AuthController@login');
+// });
 
-$router->group(['middleware' => 'auth', 'prefix' => 'api/v1/user'], function () use ($router) {
+// $router->group(['middleware' => 'auth', 'prefix' => 'api/v1/user'], function () use ($router) {
 
-    $router->get('profile', 'API\UserController@profile');
-    $router->get('{id}', 'API\UserController@singleUser');
-    $router->get('/', 'API\UserController@allUsers');
-});
+//     $router->get('profile', 'API\UserController@profile');
+//     $router->get('{id}', 'API\UserController@singleUser');
+//     $router->get('/', 'API\UserController@allUsers');
+// });
