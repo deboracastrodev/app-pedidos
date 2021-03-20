@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Component\HttpFoundation\Response;
+use Anik\Form\FormRequest;
 
 class ClienteRequest extends FormRequest
 {

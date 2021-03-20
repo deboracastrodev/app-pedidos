@@ -15,8 +15,6 @@ class Cliente extends Model implements AuthenticatableContract, AuthorizableCont
 
     use HasFactory, Authenticatable, Authorizable;
 
-    protected $table = 'cliente';
-
     /**
      * The attributes that are mass assignable.
      *

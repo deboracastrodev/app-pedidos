@@ -13,17 +13,16 @@
 |
 */
 
-$router->post('login', 'ClienteController@login');
 
 $router->group([
     'prefix' => 'v1',
     'as' => 'api.', 
-    'namespace' => 'API\v1', 
-    'middleware' => 'authapi'
+    'namespace' => 'API\v1'
 ], function () use ($router) {
     $router->get('cliente', 'ClienteController@listAll');
     $router->post('cliente', 'ClienteController@cadastrar');
-    $router->get('cliente/{id}', 'ClienteController@getById');
+    $router->get('cliente/{id}', ['middleware' => 'authapi'], 'ClienteController@getById');
+    $router->post('cliente/login', 'ClienteController@login');
 }); 
 
 // $router->group(['prefix' => ''], function ($router) 

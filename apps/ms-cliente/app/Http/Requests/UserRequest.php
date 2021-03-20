@@ -4,16 +4,16 @@ namespace App\Http\Requests;
 
 use Anik\Form\FormRequest;
 
-class ClienteLoginRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    protected function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,13 +21,10 @@ class ClienteLoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    protected function rules()
     {
-        $validations = [
-            'username' => 'required|string',
-            'password' => 'required|string',
+        return [
+            //
         ];
-
-        return $validations;
     }
 }
